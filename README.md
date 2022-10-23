@@ -43,6 +43,11 @@ a. Animation demo
 ```
 python animation_demo.py --config config/end2end.yaml --checkpoint path/to/checkpoint --source_image_pth path/to/source_image --driving_video_pth path/to/driving_video --relative --adapt_scale --find_best_frame
 ```
+This demo can be exercised using the provided [Makefile](Makefile). Just type:
+```
+make
+```
+and the `result-elon-musk+original.mp4` file will be created, which contains the original video [assets/02.mp4](assets/02.mp4) and the animated face of Elon Musk side by side. This clip will be created using `ffmpeg`, which must be installed in the system.
 
 b. Face swap demo
 We adopt [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch) for indicating the face regions in both the source and driving images.
