@@ -16,7 +16,7 @@ if __name__ == "__main__":
     parser.add_argument("--gpu", action="store_true", help="run the inference on gpu")
     parser.add_argument("--with_eye", action="store_true", help="use eye part for extracting texture")
     parser.add_argument("--tdmm_checkpoint", default=None, help="path to checkpoint of the tdmm estimator model to restore")
-    
+
     opt = parser.parse_args()
 
     checkpoint = torch.load(opt.tdmm_checkpoint, map_location=torch.device('cpu'))

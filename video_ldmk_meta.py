@@ -32,7 +32,7 @@ if __name__ == "__main__":
         print('processing {}'.format(video_name))
         video_pth = os.path.join(opt.video_dir, video_name)
         video = np.array(mimread(video_pth))
-        
+
         video_ldmk_meta = {}
         for i in range(video.shape[0]):
             ldmk_pred = fa.get_landmarks(video[i])[0]

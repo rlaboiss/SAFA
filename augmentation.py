@@ -343,7 +343,7 @@ class AllAugmentationTransform:
 
         if self.flip_param is not None:
             flip_transform = RandomFlip(**self.flip_param)
-        
+
         clip, t_flip, h_flip = flip_transform(clip)
 
         return clip, t_flip, h_flip

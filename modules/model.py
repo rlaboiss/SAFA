@@ -160,14 +160,14 @@ class GeneratorFullModel(torch.nn.Module):
 
         source_codedict = self.tdmm.encode(x['source'])
         driving_codedict = self.tdmm.encode(x['driving'])
-        
+
         source_verts, source_transformed_verts, source_ldmk_2d = self.tdmm.decode_flame(source_codedict)
         driving_verts, driving_transformed_verts, driving_ldmk_2d = self.tdmm.decode_flame(driving_codedict)
 
         source_albedo = self.tdmm.extract_texture(x['source'], source_transformed_verts, with_eye=self.with_eye)
         render_ops = self.tdmm.render(source_transformed_verts, driving_transformed_verts, source_albedo)
 
-        generated = self.generator(x['source'], kp_source=kp_source, kp_driving=kp_driving, 
+        generated = self.generator(x['source'], kp_source=kp_source, kp_driving=kp_driving,
                                                 render_ops=render_ops, driving_features=driving_codedict)
         generated.update({'kp_source': kp_source, 'kp_driving': kp_driving})
 
@@ -175,7 +175,7 @@ class GeneratorFullModel(torch.nn.Module):
 
         pyramide_real = self.pyramid(x['driving'])
         pyramide_generated = self.pyramid(generated['prediction'])
-        
+
         if self.loss_weights['landmark'] != 0:
             source_ldmk_loss = F.l1_loss(source_ldmk_2d, source_ldmk_2d_gt)
             driving_ldmk_loss = F.l1_loss(driving_ldmk_2d, driving_ldmk_2d_gt)
@@ -302,7 +302,7 @@ class TdmmFullModel(torch.nn.Module):
         verts, transformed_verts, landmark_2d = self.tdmm.decode_flame(codedict)
 
         ldmk_loss = F.l1_loss(x['ldmk'], landmark_2d)
-        param_loss = 1e-3 * (torch.mean(codedict['shape'] ** 2) + 0.8 * torch.mean(codedict['exp'] ** 2)) 
+        param_loss = 1e-3 * (torch.mean(codedict['shape'] ** 2) + 0.8 * torch.mean(codedict['exp'] ** 2))
 
         losses = {}
         losses['ldmk_loss'] = ldmk_loss

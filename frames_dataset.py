@@ -141,7 +141,7 @@ class FramesDataset(Dataset):
             out['source'] = source.transpose((2, 0, 1))
             out['source_ldmk_2d'] = video_meta[frame_idx[0]]['ldmk']
             out['driving_ldmk_2d'] = video_meta[frame_idx[1]]['ldmk']
-            
+
             if h_flip:
                 out['source_ldmk_2d'][:, 0] = source.shape[1] - out['source_ldmk_2d'][:, 0]
                 out['driving_ldmk_2d'][:, 0] = driving.shape[1] - out['driving_ldmk_2d'][:, 0]
@@ -239,7 +239,7 @@ class ImageDataset(Dataset):
 
         if self.transform:
             image, _, f_flip = self.transform(image)
-        
+
         image = np.array(image[0], dtype='float32')
 
         out = {}

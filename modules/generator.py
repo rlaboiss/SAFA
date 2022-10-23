@@ -8,7 +8,7 @@ from modules.util import AntiAliasInterpolation2d
 
 class OcclusionAwareGenerator(nn.Module):
     """
-    Given source image, dense motion field, occlusion map, and driving 3DMM code, 
+    Given source image, dense motion field, occlusion map, and driving 3DMM code,
     the U-net shaped Generator outputs the final reconstructed image.
     """
 
@@ -86,7 +86,7 @@ class OcclusionAwareGenerator(nn.Module):
             deformation = deformation.permute(0, 2, 3, 1)
         return F.grid_sample(inp, deformation, align_corners=True)
 
-    def forward(self, source_image, kp_driving=None, kp_source=None, render_ops=None, 
+    def forward(self, source_image, kp_driving=None, kp_source=None, render_ops=None,
                       blend_mask=None, driving_image=None, driving_features=None):
 
         # Encoder
@@ -97,7 +97,7 @@ class OcclusionAwareGenerator(nn.Module):
         # Transforming feature representation according to deformation and occlusion
         output_dict = {}
         if self.dense_motion_network is not None:
-            dense_motion = self.dense_motion_network(source_image=source_image, kp_source=kp_source, kp_driving=kp_driving, 
+            dense_motion = self.dense_motion_network(source_image=source_image, kp_source=kp_source, kp_driving=kp_driving,
                                                      render_ops=render_ops)
             output_dict['mask'] = dense_motion['mask']
             output_dict['sparse_deformed'] = dense_motion['sparse_deformed']

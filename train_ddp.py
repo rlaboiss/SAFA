@@ -18,7 +18,7 @@ def fix_bn(m):
     if classname.find('BatchNorm') != -1:
         m.eval()
 
-def train(config, generator, discriminator, kp_detector, tdmm, 
+def train(config, generator, discriminator, kp_detector, tdmm,
           log_dir, dataset, local_rank, with_eye=True, checkpoint=None, tdmm_checkpoint=None):
     train_params = config['train_params']
 
@@ -63,7 +63,7 @@ def train(config, generator, discriminator, kp_detector, tdmm,
         generator_full = DDP(generator_full, device_ids=[local_rank], output_device=local_rank, find_unused_parameters=True)
         discriminator_full = DDP(discriminator_full, device_ids=[local_rank], output_device=local_rank, find_unused_parameters=True)
 
-    # fix bn layers of pretrained tdmm model 
+    # fix bn layers of pretrained tdmm model
     generator_full._module_copies[0].tdmm.apply(fix_bn)
 
     with Logger(log_dir=log_dir, visualizer_params=config['visualizer_params'], checkpoint_freq=train_params['checkpoint_freq']) as logger:

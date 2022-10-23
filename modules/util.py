@@ -353,7 +353,7 @@ class ContextualAttention(nn.Module):
         kernel = 2 * self.rate
         # raw_w is extracted for reconstruction
         raw_w = extract_image_patches(b, ksizes=[kernel, kernel],
-                                      strides=[self.rate*self.stride, 
+                                      strides=[self.rate*self.stride,
                                                self.rate*self.stride],
                                       rates=[1, 1],
                                       padding='same')
@@ -437,7 +437,7 @@ class ContextualAttention(nn.Module):
 def extract_image_patches(images, ksizes, strides, rates, padding='same'):
     """
     Borrowed from https://github.com/daa233/generative-inpainting-pytorch/blob/master/utils/tools.py
-    
+
     Extract patches from images and put them in the C output dimension.
     :param padding:
     :param images: [batch, channels, in_rows, in_cols]. A 4-D Tensor with shape

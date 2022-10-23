@@ -44,7 +44,7 @@ def reconstruction(config, generator, kp_detector, tdmm, checkpoint, log_dir, da
                 x['video'] = x['video'].cuda()
             kp_source = kp_detector(x['video'][:, :, 0])
 
-            source_codedict = tdmm.encode(x['video'][:, :, 0]) 
+            source_codedict = tdmm.encode(x['video'][:, :, 0])
             for frame_idx in range(x['video'].shape[2]):
                 source = x['video'][:, :, 0]
                 driving = x['video'][:, :, frame_idx]
@@ -54,16 +54,16 @@ def reconstruction(config, generator, kp_detector, tdmm, checkpoint, log_dir, da
 
                 source_verts, source_transformed_verts, source_ldmk_2d = tdmm.decode_flame(source_codedict)
                 driving_verts, driving_transformed_verts, driving_ldmk_2d = tdmm.decode_flame(driving_codedict)
-               
+
                 source_albedo = tdmm.extract_texture(source, source_transformed_verts, with_eye=with_eye)
-                
+
                 render_ops = tdmm.render(source_transformed_verts, driving_transformed_verts, source_albedo)
 
-                out = generator(source, kp_source=kp_source, kp_driving=kp_driving, 
+                out = generator(source, kp_source=kp_source, kp_driving=kp_driving,
                                 render_ops=render_ops, driving_features=driving_codedict)
                 out['kp_source'] = kp_source
                 out['kp_driving'] = kp_driving
-                
+
                 del out['sparse_deformed']
 
                 predictions.append(np.transpose(out['prediction'].data.cpu().numpy(), [0, 2, 3, 1])[0])
@@ -75,7 +75,7 @@ def reconstruction(config, generator, kp_detector, tdmm, checkpoint, log_dir, da
                 loss_list.append(torch.abs(out['prediction'] - driving).mean().cpu().numpy())
 
             if not os.path.exists(os.path.join(png_dir, x['name'][0])):
-                os.mkdir(os.path.join(png_dir, x['name'][0])) 
+                os.mkdir(os.path.join(png_dir, x['name'][0]))
             # save png
             for i in range(len(predictions)):
                 imageio.imsave(os.path.join(png_dir, x['name'][0] + '/%07d.png' % i), (255 * predictions[i]).astype(np.uint8))

@@ -60,7 +60,7 @@ if __name__ == "__main__":
     if opt.mode == 'train_tdmm':
         tdmm = TDMMEstimator()
 
-        dataset = ImageDataset(data_dir=config['dataset_params']['root_dir'], 
+        dataset = ImageDataset(data_dir=config['dataset_params']['root_dir'],
                                meta_dir=config['dataset_params']['meta_dir'],
                                augmentation_params=config['dataset_params']['augmentation_params'])
     else:
@@ -79,17 +79,17 @@ if __name__ == "__main__":
 
     if opt.mode == 'train':
         print("Training...")
-        train(config, generator, discriminator, kp_detector, tdmm, log_dir, dataset, local_rank, 
+        train(config, generator, discriminator, kp_detector, tdmm, log_dir, dataset, local_rank,
               with_eye=opt.with_eye, checkpoint=opt.checkpoint, tdmm_checkpoint=opt.tdmm_checkpoint)
     elif opt.mode == 'train_tdmm':
         print("Training tdmm ...")
         train_tdmm(config, tdmm, log_dir, dataset, local_rank, tdmm_checkpoint=opt.tdmm_checkpoint)
     elif opt.mode == 'reconstruction':
         print("Reconstruction...")
-        reconstruction(config, generator, kp_detector, tdmm, 
+        reconstruction(config, generator, kp_detector, tdmm,
                        opt.checkpoint, log_dir, dataset, with_eye=opt.with_eye)
     elif opt.mode == 'animate':
         print("Animate...")
-        animate(config, generator, kp_detector, tdmm, 
+        animate(config, generator, kp_detector, tdmm,
                 opt.checkpoint, log_dir, dataset, with_eye=opt.with_eye)
 

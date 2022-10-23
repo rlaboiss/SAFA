@@ -91,7 +91,7 @@ def load_checkpoints(blend_scale, config_path, checkpoint_path, cpu=False):
     generator.eval()
     kp_detector.eval()
     tdmm.eval()
-    
+
     return generator, kp_detector, tdmm
 
 def load_face_parser(cpu=False):
@@ -99,7 +99,7 @@ def load_face_parser(cpu=False):
 
     face_parser = BiSeNet(n_classes=19)
     face_parser.load_state_dict(torch.load('face_parsing/cp/79999_iter.pth', map_location=torch.device('cpu')), strict=False)
- 
+
     if not cpu:
        face_parser.cuda()
 
@@ -182,7 +182,7 @@ def faceswap(opt, fa, generator, kp_detector, tdmm):
             source_albedo = tdmm.extract_texture(source, source_transformed_verts, with_eye=opt.with_eye)
             render_ops = tdmm.render(source_transformed_verts, driving_transformed_verts, source_albedo)
 
-            out = generator(source, kp_source=kp_source, kp_driving=kp_driving, render_ops=render_ops, 
+            out = generator(source, kp_source=kp_source, kp_driving=kp_driving, render_ops=render_ops,
                             blend_mask=blend_mask, driving_image=driving, driving_features=driving_codedict)
 
             if opt.use_detection:
@@ -221,7 +221,7 @@ if __name__ == "__main__":
     face_parser = load_face_parser(opt.cpu)
     print("face_parser is loaded!")
 
-    fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, face_detector='sfd', 
+    fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, face_detector='sfd',
                                       device='cpu' if opt.cpu else 'cuda')
     faceswap(opt, fa, generator, kp_detector, tdmm)
-            
+

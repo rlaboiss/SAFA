@@ -54,7 +54,7 @@ class Pytorch3dRasterizer(nn.Module):
 
 
 def face_vertices(vertices, faces):
-    """ 
+    """
     :param vertices: [batch size, number of vertices, 3]
     :param faces: [batch size, number of faces, 3]
     :return: [batch size, number of faces, 3, 3]
@@ -72,7 +72,7 @@ def face_vertices(vertices, faces):
     vertices = vertices.reshape((bs * nv, vertices.shape[2]))
     # pytorch only supports long and byte tensors for indexing
     return vertices[faces.long()]
-    
+
 def vertex_normals(vertices, faces):
     """
     :param vertices: [batch size, number of vertices, 3]
@@ -95,9 +95,9 @@ def vertex_normals(vertices, faces):
     faces = faces.reshape(-1, 3)
     vertices_faces = vertices_faces.reshape(-1, 3, 3)
 
-    normals.index_add_(0, faces[:, 1].long(), 
+    normals.index_add_(0, faces[:, 1].long(),
                        torch.cross(vertices_faces[:, 2] - vertices_faces[:, 1], vertices_faces[:, 0] - vertices_faces[:, 1]))
-    normals.index_add_(0, faces[:, 2].long(), 
+    normals.index_add_(0, faces[:, 2].long(),
                        torch.cross(vertices_faces[:, 0] - vertices_faces[:, 2], vertices_faces[:, 1] - vertices_faces[:, 2]))
     normals.index_add_(0, faces[:, 0].long(),
                        torch.cross(vertices_faces[:, 1] - vertices_faces[:, 0], vertices_faces[:, 2] - vertices_faces[:, 0]))

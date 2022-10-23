@@ -48,7 +48,7 @@ class Logger:
     def save_cpk(self, emergent=False):
         cpk = {k: v.state_dict() for k, v in self.models.items()}
         cpk['epoch'] = self.epoch
-        cpk_path = os.path.join(self.cpk_dir, '%s-checkpoint.pth.tar' % str(self.epoch).zfill(self.zfill_num)) 
+        cpk_path = os.path.join(self.cpk_dir, '%s-checkpoint.pth.tar' % str(self.epoch).zfill(self.zfill_num))
         if not (os.path.exists(cpk_path) and emergent):
             torch.save(cpk, cpk_path)
 
@@ -196,7 +196,7 @@ class Visualizer:
             occlusion_map = F.interpolate(occlusion_map, size=source.shape[1:3]).numpy()
             occlusion_map = np.transpose(occlusion_map, [0, 2, 3, 1])
             images.append(occlusion_map)
-        
+
         if 'occlusion_map2' in out:
             occlusion_map1 = 1.0 - out['occlusion_map2'].data.cpu().repeat(1, 3, 1, 1)
             occlusion_map1 = F.interpolate(occlusion_map1, size=source.shape[1:3]).numpy()
@@ -280,14 +280,14 @@ class Visualizer:
             motion_field = motion_field - identity_grid
             optic_flow = flow_to_image(motion_field)[None, ...]
             images.append(optic_flow)
-        
+
         if 'deformation' in out and out['deformation'].shape[0] == 1:
             deformation = F.interpolate(out['deformation'].permute(0, 3, 1, 2), size=source.shape[1:3], mode='bilinear')
             deformation = deformation.squeeze().permute(1, 2, 0).data.cpu().numpy()
             deformation = deformation - identity_grid
             optic_flow = flow_to_image(deformation)[None, ...]
             images.append(optic_flow)
-        
+
         image = self.create_image_grid(*images)
         image = (255 * image).astype(np.uint8)
         return image

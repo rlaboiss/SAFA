@@ -44,7 +44,7 @@ def load_checkpoints(config_path, checkpoint_path, cpu=False):
         generator.cuda()
         kp_detector.cuda()
         tdmm.cuda()
- 
+
     generator.load_state_dict(checkpoint['generator'])
     kp_detector.load_state_dict(checkpoint['kp_detector'])
     tdmm.load_state_dict(checkpoint['tdmm'])
@@ -56,7 +56,7 @@ def load_checkpoints(config_path, checkpoint_path, cpu=False):
     return generator, kp_detector, tdmm
 
 
-def make_animation(source_image, driving_video, 
+def make_animation(source_image, driving_video,
                    generator, kp_detector, tdmm, with_eye=False,
                    relative=True, adapt_movement_scale=True, cpu=False):
 
@@ -174,19 +174,19 @@ if __name__ == "__main__":
     parser.add_argument("--driving_video_pth", default='', help="path to driving video")
     parser.add_argument("--result_video_pth", default='result.mp4', help="path to output")
     parser.add_argument("--result_vis_video_pth", default='result_vis.mp4', help="path to output vis")
- 
+
     parser.add_argument("--with_eye", action="store_true", help="use eye part for extracting texture")
     parser.add_argument("--relative", dest="relative", action="store_true", help="use relative or absolute keypoint coordinates")
     parser.add_argument("--adapt_scale", dest="adapt_scale", action="store_true", help="adapt movement scale based on convex hull of keypoints")
 
-    parser.add_argument("--find_best_frame", dest="find_best_frame", action="store_true", 
+    parser.add_argument("--find_best_frame", dest="find_best_frame", action="store_true",
                         help="Generate from the frame that is the most alligned with source. (Only for faces, requires face_aligment lib)")
 
-    parser.add_argument("--best_frame", dest="best_frame", type=int, default=None,  
+    parser.add_argument("--best_frame", dest="best_frame", type=int, default=None,
                         help="Set frame to start from.")
- 
+
     parser.add_argument("--cpu", dest="cpu", action="store_true", help="cpu mode.")
- 
+
 
     parser.set_defaults(relative=False)
     parser.set_defaults(adapt_scale=False)
@@ -213,16 +213,16 @@ if __name__ == "__main__":
         print ("Best frame: " + str(i))
         driving_forward = driving_video[i:]
         driving_backward = driving_video[:(i+1)][::-1]
-        predictions_forward, visualizations_forward = make_animation(source_image, driving_forward, 
+        predictions_forward, visualizations_forward = make_animation(source_image, driving_forward,
                                                                      generator, kp_detector, tdmm, with_eye=opt.with_eye,
                                                                      relative=opt.relative, adapt_movement_scale=opt.adapt_scale, cpu=opt.cpu)
-        predictions_backward, visualizations_backward = make_animation(source_image, driving_backward, 
+        predictions_backward, visualizations_backward = make_animation(source_image, driving_backward,
                                                                        generator, kp_detector, tdmm, with_eye=opt.with_eye,
                                                                        relative=opt.relative, adapt_movement_scale=opt.adapt_scale, cpu=opt.cpu)
         predictions = predictions_backward[::-1] + predictions_forward[1:]
         visualizations = visualizations_backward[::-1] + visualizations_forward[1:]
     else:
-        predictions, visualizations = make_animation(source_image, driving_video, 
+        predictions, visualizations = make_animation(source_image, driving_video,
                                     generator, kp_detector, tdmm, with_eye=opt.with_eye,
                                     relative=opt.relative, adapt_movement_scale=opt.adapt_scale, cpu=opt.cpu)
 

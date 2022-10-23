@@ -44,7 +44,7 @@ class FLAME(nn.Module):
         num_pose_basis = flame_model.posedirs.shape[-1]
         posedirs = np.reshape(flame_model.posedirs, [-1, num_pose_basis]).T
         self.register_buffer('posedirs', to_tensor(to_np(posedirs), dtype=self.dtype))
-        # 
+        #
         self.register_buffer('J_regressor', to_tensor(to_np(flame_model.J_regressor), dtype=self.dtype))
         parents = to_tensor(to_np(flame_model.kintree_table[0])).long(); parents[0] = -1
         self.register_buffer('parents', parents)
@@ -74,7 +74,7 @@ class FLAME(nn.Module):
             neck_kin_chain.append(curr_idx)
             curr_idx = self.parents[curr_idx]
         self.register_buffer('neck_kin_chain', torch.stack(neck_kin_chain))
-        
+
     def _find_dynamic_lmk_idx_and_bcoords(self, pose, dynamic_lmk_faces_idx,
                                           dynamic_lmk_b_coords,
                                           neck_kin_chain, dtype=torch.float32):
@@ -181,7 +181,7 @@ class FLAME(nn.Module):
 
         lmk_faces_idx = self.lmk_faces_idx.unsqueeze(dim=0).expand(batch_size, -1)
         lmk_bary_coords = self.lmk_bary_coords.unsqueeze(dim=0).expand(batch_size, -1, -1)
-        
+
         dyn_lmk_faces_idx, dyn_lmk_bary_coords = self._find_dynamic_lmk_idx_and_bcoords(
             full_pose, self.dynamic_lmk_faces_idx,
             self.dynamic_lmk_bary_coords,

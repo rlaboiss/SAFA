@@ -57,7 +57,7 @@ class TDMMEstimator(nn.Module):
         self.register_buffer('uvfaces', uvfaces)
         self.register_buffer('face_uvcoords', face_uvcoords)
         self.register_buffer('faces', faces)
-        
+
         # face mask for rendering details
         # with eye and mouth
         mask = imread(flame_config['model']['face_eye_mask_path']).astype(np.float32) / 255.0
@@ -80,7 +80,7 @@ class TDMMEstimator(nn.Module):
         code_dict = {}
         code_dict['code'] = code.clone()
         code_dict['feature_vec'] = feature
-        code[:, 156] += 10.0    # initial scale: 10.0 
+        code[:, 156] += 10.0    # initial scale: 10.0
         code_dict['shape'] = code[:, 0:100]
         code_dict['exp'] = code[:, 100:150]
         code_dict['pose'] = code[:, 150:156]
@@ -89,8 +89,8 @@ class TDMMEstimator(nn.Module):
         return code_dict
 
     def decode_flame(self, code_dict):
-        verts, landmarks_2d, _ = self.flame(shape_params=code_dict['shape'], 
-                                           expression_params=code_dict['exp'], 
+        verts, landmarks_2d, _ = self.flame(shape_params=code_dict['shape'],
+                                           expression_params=code_dict['exp'],
                                            pose_params=code_dict['pose'])
         transformed_verts = batch_orth_proj(verts, code_dict['cam'])
         transformed_verts[:, :, 1:] = - transformed_verts[:, :, 1:]
@@ -135,7 +135,7 @@ class TDMMEstimator(nn.Module):
                                        face_motions], -1)
         driving_transformed_verts[:, :, 2] = driving_transformed_verts[:, :, 2] + 10
         driving_rendering = self.rasterizer(driving_transformed_verts,
-                                                    self.faces.expand(batch_size, -1, -1), 
+                                                    self.faces.expand(batch_size, -1, -1),
                                                     driving_attributes)
         # alpha
         source_alpha_images = source_rendering[:, -1, :, :][:, None, :, :]
@@ -148,7 +148,7 @@ class TDMMEstimator(nn.Module):
         source = source * source_alpha_images
 
         # reenact
-        driving_uvcoords_images = driving_rendering[:, :3, :, :]; 
+        driving_uvcoords_images = driving_rendering[:, :3, :, :];
         driving_grid = (driving_uvcoords_images).permute(0, 2, 3, 1)[:, :, :, :2]
         reenact = F.grid_sample(source_albedo, driving_grid, align_corners=False)
         reenact = reenact * driving_alpha_images
@@ -186,6 +186,6 @@ class TDMMEstimator(nn.Module):
         '''
         batch_size = vertices.shape[0]
         face_vertices_ = face_vertices(vertices, self.faces.expand(batch_size, -1, -1))
-        uv_vertices = self.uv_rasterizer(self.uvcoords.expand(batch_size, -1, -1), 
+        uv_vertices = self.uv_rasterizer(self.uvcoords.expand(batch_size, -1, -1),
                                          self.uvfaces.expand(batch_size, -1, -1), face_vertices_)[:, :3]
         return uv_vertices
