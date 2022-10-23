@@ -1,6 +1,8 @@
 # SAFA: Structure Aware Face Animation (3DV2021)
 Official Pytorch Implementation of 3DV2021 paper: [**SAFA: Structure Aware Face Animation**](https://arxiv.org/abs/2111.04928).
 
+> :warning: **WARNING**: This repository is a fork of the original [SAFA](https://github.com/Qiulin-W/SAFA) repository, which has been ported to the latest versions of all required external Python modules. Some small bug fixes and other improvements have also been added. Hopefully, these changes will be integrated into the original repository.
+
 ![Screenshot](assets/video_rec1.gif)
 ![Screenshot](assets/video_rec2.gif)
 ![Screenshot](assets/source_images.png)
