@@ -12,7 +12,7 @@ Official Pytorch Implementation of 3DV2021 paper: [**SAFA: Structure Aware Face 
 
 ## Getting Started
 ```
-git clone https://github.com/Qiulin-W/SAFA.git
+git clone https://github.com/rlaboiss/SAFA.git
 ```
 
 ## Installation
