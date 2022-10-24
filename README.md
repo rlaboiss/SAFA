@@ -1,7 +1,7 @@
 # SAFA: Structure Aware Face Animation (3DV2021)
 Official Pytorch Implementation of 3DV2021 paper: [**SAFA: Structure Aware Face Animation**](https://arxiv.org/abs/2111.04928).
 
-> :warning: **WARNING**: This repository is a fork of the original [SAFA](https://github.com/Qiulin-W/SAFA) repository, which has been ported to the latest versions of all required external Python modules. I made it working for the following versions: Python 3.9.12, torch 1.11.0, torchvision 0.12.0, CUDA 11.3, and PyTorch3D 0.7.0. Some small bug fixes and other improvements have also been added. Hopefully, these changes will be integrated into the original repository. 
+> :warning: **WARNING**: This repository is a fork of the original [SAFA](https://github.com/Qiulin-W/SAFA) repository, which has been ported to the latest versions of all required external Python modules. I made it working for the following versions: Python 3.9.12, torch 1.11.0, torchvision 0.12.0, CUDA 11.3, and PyTorch3D 0.7.1. Some small bug fixes and other improvements have also been added. Hopefully, these changes will be integrated into the original repository. 
 
 ![Screenshot](assets/video_rec1.gif)
 ![Screenshot](assets/video_rec2.gif)
@@ -24,9 +24,9 @@ For installing PyTorch3D, follow the guidance from: https://github.com/facebookr
 However, notice that the installed version PyTorch3D must depend exactly on the same version of CUDA as the installed versions of torch and torchvision, otherwise some dynamically-loaded libraries will fail due to unresolved C++ symbols. One way of accomplishing this is by providing a file of links with the appropriate versions when invoking `pip`, for instance:
 ```
 pip install -r requirements.txt -f https://download.pytorch.org/whl/cu113/torch_stable.html
-pip install git+https://github.com/facebookresearch/pytorch3d.git@v0.7.0
+pip install git+https://github.com/facebookresearch/pytorch3d.git@v0.7.1
 ```
-With the commands above, versions 1.11.0+cu113 and 0.12.0+cu113 of torch and torchvision, respectively, will be installed. They will be compatible with the PyTorch3D installed via GitHub (version 0.7.0).
+With the commands above, versions 1.11.0+cu113 and 0.12.0+cu113 of torch and torchvision, respectively, will be installed. They will be compatible with the PyTorch3D installed via GitHub (version 0.7.1).
 
 All the dependencies listed in [requirements.txt](requirements.txt) will be also be installed with the commands above.
 
