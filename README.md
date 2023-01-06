@@ -30,6 +30,11 @@ With the commands above, versions 1.11.0+cu113 and 0.12.0+cu113 of torch and tor
 
 All the dependencies listed in [requirements.txt](requirements.txt) will be also be installed with the commands above.
 
+N.B.: PyTorch3D is compiled from source with the command above. You need to ensure that conda's `ld` command (in `<conda-dir>/compiler_compat/ld`) is compatible with the `g++` compiler installed in the system. The command below may help to fix incompatibility problems:
+```
+pip install -c conda-forge gxx binutils
+```
+
 ## Usage
 
 ### 1. Preparation
