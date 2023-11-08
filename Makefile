@@ -6,6 +6,7 @@ result.mp4:
 	python animation_demo.py --cpu --config config/end2end.yaml	\
             --relative --adapt_scale --find_best_frame			\
             --checkpoint ckpt/final_3DV.tar				\
+            --flame_model_dir modules					\
             --source_image_pth assets/elon-musk.png			\
             --driving_video_pth assets/02.mp4
 

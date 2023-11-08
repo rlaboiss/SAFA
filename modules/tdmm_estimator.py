@@ -12,28 +12,27 @@ from modules.FLAME import FLAME
 
 import pickle
 
-flame_model_dir = './modules'
-flame_config = {
-    'model':{
-        'n_shape': 100,
-        'n_exp': 50,
-        'n_pose': 6,
-        'n_cam': 3,
-        'uv_size': 256,
-        'topology_path': os.path.join(flame_model_dir, 'data', 'head_template.obj'),
-        'flame_model_path': os.path.join(flame_model_dir, 'data', 'generic_model.pkl'),
-        'flame_lmk_embedding_path': os.path.join(flame_model_dir, 'data', 'landmark_embedding.npy'),
-        'face_mask_path': os.path.join(flame_model_dir, 'data', 'uv_face_mask.png'),
-        'face_eye_mask_path': os.path.join(flame_model_dir, 'data', 'uv_face_eye_mask.png')
-    },
-    'dataset':{
-        'image_size': 256
-    }
-}
-
 class TDMMEstimator(nn.Module):
-    def __init__(self):
+    def __init__(self, flame_model_dir='./modules'):
         super(TDMMEstimator, self).__init__()
+
+        flame_config = {
+            'model':{
+                'n_shape': 100,
+                'n_exp': 50,
+                'n_pose': 6,
+                'n_cam': 3,
+                'uv_size': 256,
+                'topology_path': os.path.join(flame_model_dir, 'data', 'head_template.obj'),
+                'flame_model_path': os.path.join(flame_model_dir, 'data', 'generic_model.pkl'),
+                'flame_lmk_embedding_path': os.path.join(flame_model_dir, 'data', 'landmark_embedding.npy'),
+                'face_mask_path': os.path.join(flame_model_dir, 'data', 'uv_face_mask.png'),
+                'face_eye_mask_path': os.path.join(flame_model_dir, 'data', 'uv_face_eye_mask.png')
+            },
+            'dataset':{
+                'image_size': 256
+            }
+        }
 
         code_dim = flame_config['model']['n_shape'] + flame_config['model']['n_exp'] + flame_config['model']['n_pose'] + flame_config['model']['n_cam']
         self.encoder = mymobilenetv2(num_classes=code_dim, image_size=flame_config['dataset']['image_size'])

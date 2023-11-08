@@ -26,7 +26,7 @@ from scipy.spatial import ConvexHull
 if sys.version_info[0] < 3:
     raise Exception("You must use Python 3 or higher. Recommended version is Python 3.7")
 
-def load_checkpoints(config_path, checkpoint_path, cpu=False):
+def load_checkpoints(config_path, checkpoint_path, cpu=False, flame_model_dir=None):
 
     with open(config_path) as f:
         config = yaml.safe_load(f)
@@ -35,7 +35,7 @@ def load_checkpoints(config_path, checkpoint_path, cpu=False):
                                         **config['model_params']['common_params'])
     kp_detector = KPDetector(**config['model_params']['kp_detector_params'],
                              **config['model_params']['common_params'])
-    tdmm = TDMMEstimator()
+    tdmm = TDMMEstimator(flame_model_dir) if flame_model_dir else TDMMEstimator()
 
     if cpu:
         checkpoint = torch.load(checkpoint_path, map_location=torch.device('cpu'))
@@ -187,6 +187,8 @@ if __name__ == "__main__":
 
     parser.add_argument("--cpu", dest="cpu", action="store_true", help="cpu mode.")
 
+    parser.add_argument("--flame_model_dir", dest="flame_model_dir", default=None,
+                        help="Set Flame model directory.")
 
     parser.set_defaults(relative=False)
     parser.set_defaults(adapt_scale=False)
@@ -206,7 +208,7 @@ if __name__ == "__main__":
 
     source_image = resize(source_image, (256, 256))[..., :3]
     driving_video = [resize(frame, (256, 256))[..., :3] for frame in driving_video]
-    generator, kp_detector, tdmm = load_checkpoints(config_path=opt.config, checkpoint_path=opt.checkpoint, cpu=opt.cpu)
+    generator, kp_detector, tdmm = load_checkpoints(config_path=opt.config, checkpoint_path=opt.checkpoint, cpu=opt.cpu, flame_model_dir=opt.flame_model_dir)
 
     if opt.find_best_frame or opt.best_frame is not None:
         i = opt.best_frame if opt.best_frame is not None else find_best_frame(source_image, driving_video, cpu=opt.cpu)
